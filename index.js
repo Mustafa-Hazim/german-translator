@@ -42,7 +42,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
-    if(!req.query.secret == 'a892') return res.status(400).send('unauthenticed')
+    if(!req.body.secret == 'a892') return res.status(400).send('unauthenticed')
     if (!req.body.v || req.body.v.length < 1) return res.status(500).send('invalid request')
     res.setHeader('Access-Control-Allow-Origin', '*')
 
