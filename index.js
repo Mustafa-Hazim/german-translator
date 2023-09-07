@@ -21,7 +21,23 @@ AWS.config.update({ region: "eu-central-1" });
 var translate = new AWS.Translate();
 
 
+app.get('/', (req, res) => {
+    if(!req.query.v) return res.status(400).send('need the words')
+    let lang = 'de'
+    req.query.lang ? lang = req.query.lang : null
+    const toTranslate = req.query.v
 
+    let params = {
+        SourceLanguageCode: lang,
+        TargetLanguageCode: 'ar',
+        Text: req.query.v
+    };
+
+    translate.translateText(params, function (err, data) {
+        if (err) console.log(err, err.stack);
+        else res.send(data.TranslatedText);
+    });
+})
 
 app.post('/', (req, res) => {
     if (!req.body.v || req.body.v.length < 1) return res.status(500).send('invalid request')
