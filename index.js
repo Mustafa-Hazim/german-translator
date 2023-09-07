@@ -46,11 +46,18 @@ app.post('/', (req, res) => {
     if (!req.body.v || req.body.v.length < 1) return res.status(500).send('invalid request')
     res.setHeader('Access-Control-Allow-Origin', '*')
 
-    let params = {
+    let params;
+    req.body.lang != 'ar' ?
+    params = {
         SourceLanguageCode: req.body.lang,
         TargetLanguageCode: 'ar',
         Text: req.body.v
-    };
+    }:
+    params = {
+        SourceLanguageCode: req.body.lang,
+        TargetLanguageCode: 'de',
+        Text: req.body.v
+    }
 
     translate.translateText(params, function (err, data) {
         if (err) console.log(err, err.stack);
