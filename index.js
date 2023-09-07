@@ -2,7 +2,18 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 
-app.use(cors())
+const allowedOrigins = ['http://localhost:3000']
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            return callback(new Error('The CORS policy for this site does not allow the specified Origin'), false);
+        }
+        return callback(null, true);
+    },
+    exposedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization', 'api_key', 'x-api-key'],
+    credentials: true
+}));
 
 const bodyParser = require('body-parser')
 
