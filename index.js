@@ -22,6 +22,8 @@ var translate = new AWS.Translate();
 
 
 app.get('/', (req, res) => {
+    if(!req.query.secret == 'a892') return res.status(400).send('unauthenticed')
+    res.setHeader('Access-Control-Allow-Origin', '*')
     if(!req.query.v) return res.status(400).send('need the words')
     let lang = 'de'
     req.query.lang ? lang = req.query.lang : null
@@ -40,8 +42,9 @@ app.get('/', (req, res) => {
 })
 
 app.post('/', (req, res) => {
+    if(!req.query.secret == 'a892') return res.status(400).send('unauthenticed')
     if (!req.body.v || req.body.v.length < 1) return res.status(500).send('invalid request')
-
+    res.setHeader('Access-Control-Allow-Origin', '*')
 
     let params = {
         SourceLanguageCode: req.body.lang,
